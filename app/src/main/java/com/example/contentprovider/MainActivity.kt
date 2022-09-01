@@ -45,15 +45,17 @@ class MainActivity : AppCompatActivity() {
             Uri.parse(queryUri), projection, selectionClause,
             selectionArgs, sortOrder
         )
+
         if (cursor != null) {
             if (cursor.count > 0) {
                 cursor.moveToFirst()
                 val columnIndex = cursor.getColumnIndex(projection[0])
+                firstWord?.setOnClickListener {
                 do {
                     val word = cursor.getString(columnIndex)
                     clickListener?.append(word.trimIndent())
                 } while (cursor.moveToNext())
-            } else {
+            }} else {
                 Log.d(TAG, "onClickDisplayEntries: " + " no data returned")
                 clickListener?.append("No data returned".trimIndent())
             }
@@ -62,8 +64,8 @@ class MainActivity : AppCompatActivity() {
             Log.d(TAG, "onClickDisplayEntries: " + "Cursor is null")
             clickListener?.append("Cursor is null".trimIndent())
         }
+        }
 
-    }
 
 }
 
