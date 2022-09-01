@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Content Provider</string>
+    <string name="list_all_word">The List all word button clicked</string>
+    <string name="list_first_word">\"onCreate: The List first word button clicked \"</string>
+    <string name="first">Thus we Go first list word button clicked</string>
+    <string name="all">Thus we Go all list word button clicked</string>
+    <string name="words">Thus we Go all list word button clicked</string>
+</resources>
