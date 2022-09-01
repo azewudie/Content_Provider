@@ -22,7 +22,10 @@ class MainActivity : AppCompatActivity() {
         firstWord = findViewById(R.id.bt_firstWords)
         clickListener = findViewById(R.id.tv_clickListener)
         //test
+
+
         clickListener?.text = "Hello there"
+
         allWord?.setOnClickListener {
             Log.d("AllWord", getString(R.string.list_all_word))
             Toast.makeText(this, "list all word button clicked", Toast.LENGTH_LONG).show()
@@ -33,6 +36,10 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "list First word button clicked", Toast.LENGTH_LONG).show()
             clickListener?.text = "${getString(R.string.first)}\n"
         }
+        DataProvider()
+    }
+
+    private fun DataProvider() {
         val queryUri: String = Contract.CONTENT_URI.toString()
         val projection = arrayOf<String>(Contract.CONTENT_PATH) // Only get words.
         var selectionClause: String? = null
@@ -51,11 +58,12 @@ class MainActivity : AppCompatActivity() {
                 cursor.moveToFirst()
                 val columnIndex = cursor.getColumnIndex(projection[0])
                 firstWord?.setOnClickListener {
-                do {
-                    val word = cursor.getString(columnIndex)
-                    clickListener?.append(word.trimIndent())
-                } while (cursor.moveToNext())
-            }} else {
+                    do {
+                        val word = cursor.getString(columnIndex)
+                        clickListener?.append(word.trimIndent())
+                    } while (cursor.moveToNext())
+                }
+            } else {
                 Log.d(TAG, "onClickDisplayEntries: " + " no data returned")
                 clickListener?.append("No data returned".trimIndent())
             }
@@ -64,7 +72,7 @@ class MainActivity : AppCompatActivity() {
             Log.d(TAG, "onClickDisplayEntries: " + "Cursor is null")
             clickListener?.append("Cursor is null".trimIndent())
         }
-        }
+    }
 
 
 }
