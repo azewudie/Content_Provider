@@ -1,17 +1,18 @@
 package com.example.contentprovider
-
 import android.content.ContentValues.TAG
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.android.example.minimalistcontentprovider.Contract
+
 
 class MainActivity : AppCompatActivity() {
+
+
     private var allWord: Button? = null
     private var firstWord: Button? = null
     private var clickListener: TextView? = null
@@ -21,48 +22,48 @@ class MainActivity : AppCompatActivity() {
         allWord = findViewById(R.id.bt_allWords)
         firstWord = findViewById(R.id.bt_firstWords)
         clickListener = findViewById(R.id.tv_clickListener)
-        //test
 
 
-        clickListener?.text = "Hello there"
+        allWord?.setOnClickListener(this::onClickDisplayEntries)
+        firstWord?.setOnClickListener(this::onClickDisplayEntries)
 
-        allWord?.setOnClickListener {
-            Log.d("AllWord", getString(R.string.list_all_word))
-            Toast.makeText(this, "list all word button clicked", Toast.LENGTH_LONG).show()
-            clickListener?.text = "${getString(R.string.all)}\n"
-        }
-        firstWord?.setOnClickListener {
-            Log.d("AllWord", getString(R.string.list_first_word))
-            Toast.makeText(this, "list First word button clicked", Toast.LENGTH_LONG).show()
-            clickListener?.text = "${getString(R.string.first)}\n"
-        }
-        DataProvider()
     }
 
-    private fun DataProvider() {
-        val queryUri: String = Contract.CONTENT_URI.toString()
-        val projection = arrayOf<String>(Contract.CONTENT_PATH) // Only get words.
-        var selectionClause: String? = null
-        var selectionArgs: Array<String?>? = null
+    private fun onClickDisplayEntries(view: View) {
+        val queryUri: String = CONTENT_URI.toString()
+        val projection = arrayOf<String>(CONTENT_PATH)
+        val selectionClause: String?
+        val selectionArgs: Array<String>?
+        val sortOrder: String? = null
 
-        val sortOrder: String? =
-            null // For this example, we accept the order returned by the response.
+        when(view.id) {
+            R.id.bt_allWords -> {
+                selectionClause = null
+                selectionArgs = null
+            }
+            R.id.bt_firstWords -> {
+                selectionClause = "$WORD_ID=?"
+                selectionArgs = arrayOf("0")
+            }
+            else-> {
+                selectionClause = null
+                selectionArgs = null
+            }
+        }
 
         val cursor: Cursor? = contentResolver.query(
             Uri.parse(queryUri), projection, selectionClause,
             selectionArgs, sortOrder
         )
 
-        if (cursor != null) {
-            if (cursor.count > 0) {
+        if (cursor != null ) {
+            if (cursor.count > 0 ) {
                 cursor.moveToFirst()
                 val columnIndex = cursor.getColumnIndex(projection[0])
-                firstWord?.setOnClickListener {
-                    do {
-                        val word = cursor.getString(columnIndex)
-                        clickListener?.append(word.trimIndent())
-                    } while (cursor.moveToNext())
-                }
+                do {
+                    val word = cursor.getString(columnIndex)
+                    clickListener?.append(word.trimIndent())
+                } while (cursor.moveToNext())
             } else {
                 Log.d(TAG, "onClickDisplayEntries: " + " no data returned")
                 clickListener?.append("No data returned".trimIndent())
@@ -72,10 +73,7 @@ class MainActivity : AppCompatActivity() {
             Log.d(TAG, "onClickDisplayEntries: " + "Cursor is null")
             clickListener?.append("Cursor is null".trimIndent())
         }
+
     }
 
-
 }
-
-
-
