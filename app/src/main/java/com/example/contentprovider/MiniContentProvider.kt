@@ -11,7 +11,7 @@ import androidx.annotation.Nullable
 
 private const val TAG = "MiniContentProvider"
 
-class MiniContentProvider: ContentProvider() {
+class MiniContentProvider : ContentProvider() {
     private lateinit var mData: Array<String>
     override fun onCreate(): Boolean {
         initializeUriMatching()
@@ -35,14 +35,14 @@ class MiniContentProvider: ContentProvider() {
         sortOrder: String?
     ): Cursor? {
         var id = -1
-        when(sUriMatcher.match(uri)){
-            0-> {
+        when (sUriMatcher.match(uri)) {
+            0 -> {
                 id = ALL_ITEMS
                 if (selection != null) {
                     id = selectionArgs!![0].toInt()
                 }
             }
-            1-> id = uri.lastPathSegment!!.toInt()
+            1 -> id = uri.lastPathSegment!!.toInt()
             UriMatcher.NO_MATCH -> {
                 Log.d(TAG, "NO MATCH FOR THIS URI IN SCHEME. ")
                 id = id
@@ -59,14 +59,12 @@ class MiniContentProvider: ContentProvider() {
     private fun populatedCursor(id: Int): Cursor? {
         val cursor = MatrixCursor(arrayOf(CONTENT_PATH))
 
-        if (id == ALL_ITEMS){
-            for (i in mData.indices)
-            {
+        if (id == ALL_ITEMS) {
+            for (i in mData.indices) {
                 val word = mData[i]
                 cursor.addRow(arrayOf<Any>(word))
             }
-        }
-        else if (id >= 0 ){
+        } else if (id >= 0) {
             val word = mData[id]
             cursor.addRow(arrayOf<Any>(word))
         }
@@ -75,9 +73,9 @@ class MiniContentProvider: ContentProvider() {
 
     @Nullable
     override fun getType(uri: Uri): String? {
-        return when (sUriMatcher.match(uri)){
-            0-> MULTIPLE_RECORDS_MIME_TYPE
-            1-> SINGLE_RECORD_MIME_TYPE
+        return when (sUriMatcher.match(uri)) {
+            0 -> MULTIPLE_RECORDS_MIME_TYPE
+            1 -> SINGLE_RECORD_MIME_TYPE
             else -> null
         }
     }

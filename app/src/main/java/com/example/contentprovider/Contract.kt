@@ -1,9 +1,6 @@
 package com.example.contentprovider
 
 import android.net.Uri
-
-
-
 const val AUTHORITY = "com.android.example.minimalistcontentprovider.provider"
 const val CONTENT_PATH = "words"
 val CONTENT_URI = Uri.parse("content://$AUTHORITY/$CONTENT_PATH")

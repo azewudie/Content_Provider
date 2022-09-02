@@ -1,4 +1,5 @@
 package com.example.contentprovider
+
 import android.content.ContentValues.TAG
 import android.database.Cursor
 import android.net.Uri
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         val selectionArgs: Array<String>?
         val sortOrder: String? = null
 
-        when(view.id) {
+        when (view.id) {
             R.id.bt_allWords -> {
                 selectionClause = null
                 selectionArgs = null
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity() {
                 selectionClause = "$WORD_ID=?"
                 selectionArgs = arrayOf("0")
             }
-            else-> {
+            else -> {
                 selectionClause = null
                 selectionArgs = null
             }
@@ -56,8 +57,8 @@ class MainActivity : AppCompatActivity() {
             selectionArgs, sortOrder
         )
 
-        if (cursor != null ) {
-            if (cursor.count > 0 ) {
+        if (cursor != null) {
+            if (cursor.count > 0) {
                 cursor.moveToFirst()
                 val columnIndex = cursor.getColumnIndex(projection[0])
                 do {
